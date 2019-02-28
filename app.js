@@ -15,7 +15,6 @@ const bodyParser = require("body-parser");
 const loginRouter = require('./routes/loginRoutes')
 
 
-app.use('/login', loginRouter)
 
 app.use(express.static("public"));
 
@@ -25,21 +24,16 @@ app.use(session({
   saveUninitialized: false
 }));
 
-app.use(bodyParser.urlencoded({
-  extended: false
-}));
+app.use(bodyParser.json());
 
 app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(morgan('tiny'))
 
-server.listen(3001);
-// WARNING: app.listen(80) will NOT work here!
+//Routes
 
-app.get('/', (req, res) => {
-  res.send('123')
-});
+app.use('/login', loginRouter)
 
 io.on('connection', (socket) => {
   console.log('connect')
@@ -55,3 +49,7 @@ io.on('connection', (socket) => {
     io.emit('user disconnected');
   });
 });
+
+server.listen(3001);
+
+module.exports = app;
