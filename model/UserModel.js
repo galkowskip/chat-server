@@ -21,6 +21,16 @@ class User {
         }
     }
 
+    static async connect() {
+        try {
+            const connection = await pool.getConnection()
+            return connection
+        } catch (error) {
+            throw new Error(error)
+        }
+    }
+
+    //CREATE NEW USER
     //Checks if data of new user is valid. Password is checked before creating new object
     async isValid() {
         try {
@@ -55,12 +65,11 @@ class User {
             await this.isValid()
             await this.passwordHash(this.password)
             await this.saveUser()
-
-            return 1
         } catch (error) {
             throw error
         }
     }
+
     async saveUser() {
         try {
             const connection = await this.connect()
@@ -72,6 +81,51 @@ class User {
                 "${this.username}",
                 "${this.password}")
             `)
+        } catch (error) {
+            throw new Error(error)
+        }
+    }
+
+    //FIND USER
+    static async find(query) {
+        try {
+            const connection = await this.connect()
+            const response = await connection.query(`SELECT * FROM users WHERE ${query}`)
+            if (response[0]) {
+
+                const user = new User({
+                    email: response[0].email,
+                    firstName: response[0].firstname,
+                    lastName: response[0].lastname,
+                    username: response[0].username,
+                    password: response[0].password
+                })
+                return user
+            } else {
+                throw new Error("User not found")
+            }
+        } catch (error) {
+            throw new Error(error)
+        }
+    }
+
+    async checkPassword(password) {
+        const isPasswordSame = await bcrypt.compare(password, this.password)
+        if (isPasswordSame) {
+            return isPasswordSame
+        } else {
+            throw new Error("Error while comparing passwords")
+        }
+    }
+
+    static async findAuth(query, password) {
+        try {
+            const user = await this.find(query)
+            if (await user.checkPassword(password)) {
+                return user
+            } else {
+                throw "Wrong password"
+            }
         } catch (error) {
             throw new Error(error)
         }

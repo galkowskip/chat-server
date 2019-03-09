@@ -1,17 +1,12 @@
 const express = require("express");
-const passport = require("passport");
+const passport = require("../config/passport");
 const router = express.Router();
 
 const User = require("../model/UserModel");
 
-router.post(
-    "/local/auth",
-    passport.authenticate("local", {
-        successRedirect: "/",
-        failureRedirect: "/login",
-        failureFlash: true
-    })
-);
+router.post("/local/auth", passport.authenticate("local"), (req, res) => {
+    res.send("yay?")
+});
 
 router.post("/local/newUser", (req, res) => {
     try {
@@ -22,7 +17,6 @@ router.post("/local/newUser", (req, res) => {
                     res.send(response)
                 })
                 .catch(error => {
-                    console.log(error)
                     res.status(400).send({
                         error: error
                     })

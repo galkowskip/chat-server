@@ -8,6 +8,7 @@
   "dependencies": {
     "bcrypt": "^3.0.4",
     "body-parser": "^1.18.3",
+    "cookie-parser": "^1.4.4",
     "express": "~4.16.0",
     "express-session": "^1.15.6",
     "mariadb": "^2.0.3",
