@@ -1,53 +1,63 @@
-const express = require('express')
-const app = express()
+const express = require("express");
+const app = express();
 
-const passport = require("./config/passport")
+const passport = require("./config/passport");
+const passportSocketIo = require("passport.socketio");
 
-const server = require('http').Server(app);
-const io = require('socket.io')(server);
-const morgan = require("morgan")
+const server = require("http").Server(app);
+const io = require("socket.io")(server);
+const morgan = require("morgan");
 
-const session = require("express-session")
+const SocketObserver = require("./config/socketIo")
+
+const session = require("express-session");
 const bodyParser = require("body-parser");
-const cookieParser = require("cookie-parser")
+const cookieParser = require("cookie-parser");
+
+const db = require('./config/mongodb')
+
+const mongoStore = require("./config/mongoStore")
 
 //Routes import
-const loginRouter = require('./routes/loginRoutes')
+const loginRouter = require("./routes/loginRoutes");
 
 app.use(express.static("public"));
 
-app.use(session({
-  secret: "secretKey",
-  resave: true,
-  saveUninitialized: false
-}));
+app.use(
+  session({
+    key: "expres.sid",
+    secret: "secretKey",
+    store: mongoStore,
+    resave: false,
+    saveUninitialized: false
+  })
+);
 
-app.use(cookieParser())
+app.use(cookieParser());
 app.use(bodyParser.json());
+
+app.use(morgan("tiny"));
 
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use(morgan('tiny'))
-
 //Routes
+app.use("/login", loginRouter);
 
-app.use('/login', loginRouter)
+io.use(
+  passportSocketIo.authorize({
+    cookieParser: cookieParser,
+    key: "expres.sid",
+    secret: "secretKey",
+    store: mongoStore,
+  })
+);
 
-// io.on('connection', (socket) => {
-//   console.log('connect')
-//   io.emit('this', {
-//     will: 'be received by everyone'
-//   });
-
-//   socket.on('connect?', () => {
-//     console.log("yup");
-//   });
-
-//   socket.on('disconnect', () => {
-//     io.emit('user disconnected');
-//   });
-// });
+io.on("connection", socket => {
+  socketObserver = new SocketObserver(socket, mongoStore)
+  // socketObserver.watchSession()
+  socketObserver.checkUser()
+});
 
 server.listen(3001);
 
