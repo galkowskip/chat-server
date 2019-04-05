@@ -56,7 +56,7 @@ io.use(
 io.on("connection", socket => {
   socketObserver = new SocketObserver(socket, mongoStore)
   // socketObserver.watchSession()
-  socketObserver.checkUser()
+  socketObserver.observeAll()
 });
 
 server.listen(3001);

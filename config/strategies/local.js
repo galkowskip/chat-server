@@ -12,21 +12,16 @@ const localStrategy = new LocalStrategy({
       const user = await User.findOne({
         email: email
       });
-      console.log(user)
       if (user) {
-        console.log("User found");
+        if (await user.comparePasswords(password)) {
+          return done(null, user);
+        } else {
+          throw new Error("Wrong password");
+        }
       } else {
         throw new Error("User not found");
       }
-      if (await user.comparePasswords(password)) {
-        console.log("Passwords compared: ok");
-        return done(null, user);
-      } else {
-        console.log("Passwords compared: false");
-        throw new Error("Wrong password");
-      }
     } catch (error) {
-      console.log(error);
       return done(null, false, {
         message: error
       });
