@@ -54,8 +54,7 @@ io.use(
 );
 
 io.on("connection", socket => {
-  socketObserver = new SocketObserver(socket, mongoStore)
-  // socketObserver.watchSession()
+  socketObserver = new SocketObserver(socket, mongoStore, io)
   socketObserver.observeAll()
 });
 

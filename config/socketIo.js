@@ -1,11 +1,13 @@
 const UserModel = require("../model/UserModel");
 const ContactModel = require("../model/ContactModel");
 const MessageModel = require("../model/MessageSchema");
+const io = require("socket.io")
 
 module.exports = class SocketObserver {
-  constructor(socket, mongoStore) {
+  constructor(socket, mongoStore, io) {
     this.socket = socket;
     this.mongoStore = mongoStore;
+    this.io = io
   }
 
   async checkUser() {
@@ -18,15 +20,9 @@ module.exports = class SocketObserver {
     });
   }
 
-  async checkContacts() {
-    this.socket.on("ContactsObserve", async user => {
-      this.socket.emit("ContactsFound", "data");
-    });
-  }
-
   async userSearch() {
     this.socket.on("UserSearchRequest", async data => {
-      console.log(data)
+      console.log(data);
       try {
         const query = UserModel.find({
           username: new RegExp(`${data}`)
@@ -48,12 +44,13 @@ module.exports = class SocketObserver {
   async addNewContact() {
     this.socket.on("AddNewContactRequest", async id => {
       try {
-        console.log(id + " / " + this.socket.request.user.id)
+        console.log(id + " / " + this.socket.request.user.id);
         if (id !== this.socket.request.user.id) {
           const newContact = new ContactModel({
             users: [id, this.socket.request.user.id]
           });
           await newContact.save();
+          this.subscribeContact(newContact.id)
           this.socket.emit("AddNewContactDone");
         } else {
           throw new Error("Cant add contact with self");
@@ -65,64 +62,89 @@ module.exports = class SocketObserver {
   }
 
   async getContactList() {
-    this.socket.on("GetContactListRequest", async () => {
+    this.socket.on("GetContactListRequest", () => {
       try {
-        console.log(this.socket.request.user.id)
         let contactListQuery = ContactModel.find({
           users: this.socket.request.user.id
-        })
-        let contactList = await contactListQuery.exec()
-        let contactPromiseList = contactList.map(contact => {
-          return getContactData(contact)
-        })
-        console.log(contactPromiseList)
-        Promise.all(contactPromiseList).then((contacts) => {
-          console.log(contacts)
-          this.socket.emit("GetContactListDone", contacts)
+        });
+        contactListQuery.exec().then(contactList => {
+          let contactPromiseList = contactList.map(contact => {
+            this.subscribeContact(contact.id)
+            return getContactData(contact, this.socket.request.user.id);
+          });
+          Promise.all(contactPromiseList).then(contacts => {
+            this.socket.emit("GetContactListDone", contacts);
+          });
+        }).catch(error => {
+          throw new Error(error)
         })
       } catch (error) {
         throw new Error(error);
       }
+    });
+  }
+
+  watchGetAllMessages() {
+    socket.on("GetAllMessagesRequest", roomId => {
+      const query = MessageModel.find({
+        contactID: roomId
+      })
+      query.exec().then(messages => {
+        socket.emit("GetAllMessagesDone", messages)
+      })
     })
+  }
+  // Adds socket to room
+  subscribeContact(contactId) {
+    this.socket.join(contactId)
   }
 
   async observeAll() {
     this.userSearch();
     this.checkUser();
-    this.checkContacts();
     this.addNewContact();
-    this.getContactList()
+    this.getContactList();
   }
 };
 
-async function getContactData(contact) {
-  try {
-    let targets = contact.users.map(item => {
-      return await getTargetedUser(item);
-    })
-    Promise.all(targets).then((results) => {
-      console.log(results);
-      return {
-        cid: contact.id,
-        targets: results
-      };
-    })
-  } catch (error) {
-    throw new Error(error)
-  }
+// Takes takes ContactSchema and maps targeted users.
+// Second variable this function takes is the id of the user asking for data.
+// If mapped id is eqal to users, there is no need to search for his data,
+// which is passed to getTargetedUser
+
+function getContactData(contact, user) {
+  return new Promise((resolve, reject) => {
+    try {
+      let targets = contact.users.map(item => {
+        if (item !== user) {
+          return getTargetedUser(item);
+        } else {
+          return null
+        }
+      });
+      Promise.all(targets).then(results => {
+        resolve({
+          cid: contact.id,
+          targets: results
+        })
+      })
+    } catch (error) {
+      reject(error);
+    }
+  })
 }
 
-//
-async function getTargetedUser(contact) {
-  try {
+// Gets User.id's and finds their id and username. Returns Promise
+function getTargetedUser(contact) {
+  return new Promise((resolve, reject) => {
     let user = UserModel.findById(contact);
-    user = await user.exec();
-    console.log(user);
-    return {
-      id: user.id,
-      username: user.username
-    };
-  } catch (error) {
-    throw new Error(error)
-  }
+    user.exec().then(user => {
+      resolve({
+        id: user.id,
+        username: user.username
+      });
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }
