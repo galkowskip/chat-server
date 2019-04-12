@@ -21,7 +21,7 @@ const mongoStore = require("./config/mongoStore")
 //Routes import
 const loginRouter = require("./routes/loginRoutes");
 
-app.use(express.static("public"));
+app.use(express.static("public"))
 
 app.use(
   session({
