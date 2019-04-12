@@ -52,6 +52,61 @@ UserSchema.methods.comparePasswords = async function (password) {
     }
 }
 
+// Gets User.id's and finds their id and username. Returns Promise
+UserSchema.statics.getTargetedUser = function (userId) {
+    return new Promise((resolve, reject) => {
+        let user = UserModel.findById(userId);
+        user
+            .exec()
+            .then(user => {
+                resolve({
+                    id: user.id,
+                    username: user.username
+                });
+            })
+            .catch(error => {
+                reject(error);
+            });
+    });
+}
+
+
+UserSchema.statics.checkUser = function (user) {
+    return new Promise((resolve, reject) => {
+        const query = UserModel.findById(user)
+        query.exec().then(result => {
+            if (result) {
+                resolve(true, null)
+            } else {
+                reject(false, null)
+            }
+        }).catch(error => {
+            reject(null, error)
+        })
+    })
+}
+
+UserSchema.statics.userSimilarSearch = function (data) {
+    return new Promise((resolve, reject) => {
+        if (data === '') {
+            resolve(null)
+        }
+        const query = UserModel.find({
+            username: new RegExp(`${data}`)
+        });
+        query.exec().then(result => {
+            const response = result.map(item => {
+                return {
+                    username: item.username,
+                    id: item.id
+                };
+            });
+            resolve(response)
+        }).catch(error => {
+            reject(error)
+        })
+    })
+}
 const UserModel = mongoose.model('User', UserSchema)
 
 module.exports = UserModel
