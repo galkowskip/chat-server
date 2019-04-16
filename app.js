@@ -65,8 +65,6 @@ io.on("connection", socket => {
   socketObserver.observeAll()
 });
 
-
-const port = process.env.PORT || 3001
-server.listen(port);
+server.listen(process.env.PORT || 3001);
 
 module.exports = app;
