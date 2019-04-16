@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "nodemon ./app.js",
-    "production": "nodemon ./app.js NODE_ENV='production'",
+    "production": "set NODE_ENV=production && nodemon ./app.js ",
     "heroku-postbuild": "cd client && npm install && npm install --only=dev --no-shrinkwrap && npm run build"
   },
   "dependencies": {
