@@ -51,8 +51,6 @@ if (process.env.NODE_ENV === 'production') {
   })
 }
 
-
-
 io.use(
   passportSocketIo.authorize({
     cookieParser: cookieParser,
