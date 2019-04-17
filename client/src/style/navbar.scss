@@ -1,0 +1,72 @@
+@import "variables";
+
+nav {
+  background-color: $orange;
+  max-height: 80px;
+  grid-column: 1/13;
+  grid-row: 1/2;
+  display: grid;
+  grid-template-columns: 150px auto 50px;
+
+  .burger-nav {
+    @media screen and (max-width: 550px) {
+      display: block;
+      height: 40px;
+      width: 40px;
+      grid-column: 3/4;
+      cursor: pointer;
+      content: url("./imgs/burger-nav.png");
+      background: no-repeat 90% center;
+    }
+
+    display: none;
+  }
+
+  .dropdown-menu {
+    position: absolute;
+    top: 80px;
+    right: 50px;
+    background-color: $orange;
+  }
+
+  .logo {
+    height: 100px;
+    font-size: 3em;
+    grid-column: 1/2;
+    padding: 0;
+    display: grid;
+    text-align: center;
+    content: url("./imgs/logo.png");
+  }
+
+  ul {
+    margin: 0;
+    padding: 20px 0px 0px 0px;
+    display: flex;
+    justify-content: flex-end;
+
+    li {
+      align-self: center;
+      list-style-type: none;
+      margin: 0px 10px 0px 10px;
+      padding: 0;
+      height: 100%;
+      font-size: 2em;
+
+      @media screen and (max-width: 550px) {
+        font-size: 1.5em;
+        display: block;
+      }
+
+      a {
+        display: block;
+        text-align: center;
+      }
+    }
+  }
+
+  a {
+    color: $black;
+    text-decoration: $white;
+  }
+}

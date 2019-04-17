@@ -21,7 +21,7 @@ const mongoStore = require("./config/mongoStore")
 //Routes import
 const loginRouter = require("./routes/loginRoutes");
 
-app.use(express.static("public"));
+app.use(express.static("client/build"))
 
 app.use(
   session({
@@ -43,7 +43,13 @@ app.use(passport.session());
 
 //Routes
 app.use("/login", loginRouter);
+// app.get('*', (req, res) => {
+//   res.sendFile('/client/build/index.html')
+// })
 
+if (process.env.NODE_ENV === 'production') {
+  console.log('production')
+}
 io.use(
   passportSocketIo.authorize({
     cookieParser: cookieParser,
@@ -58,6 +64,8 @@ io.on("connection", socket => {
   socketObserver.observeAll()
 });
 
-server.listen(3001);
+
+const port = process.env.PORT || 3001
+server.listen(port);
 
 module.exports = app;
