@@ -19,6 +19,7 @@ class MessageApp extends Component {
       contact: this.props.contacts.activeContact
     });
   }
+
   render() {
     return (
       <div className="chat-container">
@@ -31,7 +32,7 @@ class MessageApp extends Component {
           />
         </div>
         <div className="message-container">
-          <MessageBox messages={this.props.messages} />
+          <MessageBox messages={this.props.messages} user={this.props.user} />
           <InputBox
             handleMessage={this.handleMessage}
             activeContact={this.props.contacts.activeContact}
@@ -45,7 +46,8 @@ class MessageApp extends Component {
 const mapStateToProps = state => ({
   contacts: state.contacts,
   messages: state.messages,
-  searchItems: state.contacts.searchItems
+  searchItems: state.contacts.searchItems,
+  user: state.user.data.user
 });
 
 export default connect(mapStateToProps)(MessageApp);

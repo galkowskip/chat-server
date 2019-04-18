@@ -2,5 +2,6 @@
 
 # dependencies
 /node_modules
-
+# /keys.js
 /client/node_modules
+/client/build

@@ -54,7 +54,7 @@ module.exports = class SocketObserver {
     });
   }
 
-  async getContactList() {
+  async watchGetContactList() {
     this.socket.on("GetContactListRequest", () => {
       try {
         let contactListQuery = ContactModel.find({
@@ -122,7 +122,7 @@ module.exports = class SocketObserver {
     this.userSearch();
     this.checkUser();
     this.addNewContact();
-    this.getContactList();
+    this.watchGetContactList();
     this.watchSendMessage();
     this.watchGetAllMessages();
     this.watchDeleteContact();

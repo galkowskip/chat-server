@@ -8,8 +8,8 @@ const MessageBox = props => {
       <div className="message-box">
         {props.messages.messages.map(message => {
           return (
-            <div key={message.id}>
-              <MessageCard message={message} key={message.id} />
+            <div key={message._id}>
+              <MessageCard message={message} user={props.user._id} />
             </div>
           );
         })}

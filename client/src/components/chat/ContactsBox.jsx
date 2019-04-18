@@ -3,10 +3,8 @@ import React, { Component } from "react";
 import ContactsSearch from "./ContactsSearch";
 import {
   deleteContact,
-  selectContact
 } from "../../store/actions/contactsActions";
-import { getMessagesSuccess } from "../../store/actions/messageActions";
-import SocketEmiter from "../../store/SocketEmiter";
+
 import ContactButton from "./ContactButton";
 
 export default class ContactsBox extends Component {
@@ -18,9 +16,7 @@ export default class ContactsBox extends Component {
   deleteContactHandler(e) {
     deleteContact(e.target.id);
   }
-  componentDidMount() {
-    SocketEmiter.getContactListRequest();
-  }
+
   render() {
     return (
       <div className="contacts-box">

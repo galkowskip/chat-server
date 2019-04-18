@@ -30,13 +30,6 @@ export function deleteContact(data) {
     })
 }
 
-export function getContacts(user) {
-    store.dispatch({
-        type: "GET_CONTACTS_REQUEST",
-        payload: user
-    })
-}
-
 export function userSearchDone(data) {
     store.dispatch({
         type: "USERS_SEARCH_DONE",

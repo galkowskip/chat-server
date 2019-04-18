@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const UserModel = require('./UserModel')
 
 const MessageSchema = new mongoose.Schema({
     owner: String,
@@ -19,6 +20,7 @@ MessageSchema.statics.getAllMessages = function (roomId) {
         })
     })
 }
+
 
 const MessageModel = mongoose.model('Message', MessageSchema)
 

@@ -62,10 +62,15 @@ io.use(
 io.on("connection", socket => {
   socketObserver = new SocketObserver(socket, mongoStore, io)
   socketObserver.observeAll()
+
+  socket
 });
 
 
 const port = process.env.PORT || 3001
-server.listen(port);
+
+server.listen(port, () => {
+  console.log(`Server listening on port ${port}`)
+});
 
 module.exports = app;

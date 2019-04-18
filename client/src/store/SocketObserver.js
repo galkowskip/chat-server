@@ -1,6 +1,5 @@
 import {
   userSearchDone,
-  addNewContact,
   getContactsListSuccess
 } from "./actions/contactsActions";
 import {
@@ -18,10 +17,13 @@ class SocketObserver {
   }
 
   //Watch methods
+
+  //Listens if user is logged. If he is then sends data to redux, and asks for contacts list
   async watchUserAuth() {
     this.socket.on("UserAuthorized", data => {
       if (data === false) {} else {
         watchUserAuthorizedDone(data);
+        SocketEmiter.getContactListRequest()
       }
     });
   }
@@ -55,7 +57,6 @@ class SocketObserver {
   }
   watchDeleteContact() {
     this.socket.on("ContactDeleted", () => {
-      console.log(1)
       SocketEmiter.getContactListRequest()
     })
   }
