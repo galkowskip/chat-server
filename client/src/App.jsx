@@ -15,20 +15,26 @@ import LogIn from "./components/auth/LogIn";
 import MessageApp from "./components/chat/MessageApp";
 import Logout from "./components/auth/Logout";
 
-//
+//Socket
 import socket from "./config/socketConfig";
 import SocketObserver from "./store/SocketObserver";
 
 //Style
 import "./style/main.css";
 import { store } from "./index";
+import SocketEmiter from "./store/SocketEmiter";
 
+/**
+ * Highest order app component. Serves as routes manager for whole app. Uses socket.io Observer class to listen for upcoming events. 
+ * @constructor
+ * 
+ */
 class App extends Component {
   componentDidMount() {
-    socket.emit("CheckUser");
-    //!
     const Observer = new SocketObserver(socket, store);
     Observer.watchAll();
+
+    SocketEmiter.checkUser()
   }
   render() {
     return (

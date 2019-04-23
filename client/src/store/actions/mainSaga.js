@@ -1,5 +1,4 @@
 import userRootSaga from './userSaga'
-import messageRootSaga from './messageSaga'
 
 import {
     all
@@ -7,7 +6,6 @@ import {
 
 export default function* mainSaga() {
     yield all([
-        userRootSaga(),
-        messageRootSaga()
+        userRootSaga()
     ])
 }

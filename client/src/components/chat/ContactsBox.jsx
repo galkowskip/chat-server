@@ -7,12 +7,20 @@ import {
 
 import ContactButton from "./ContactButton";
 
-export default class ContactsBox extends Component {
+/**
+ * Is created for every Contact user is assigned to
+ * @constructor
+ */
+class ContactsBox extends Component {
   constructor(props) {
     super(props);
 
     this.deleteContactHandler = this.deleteContactHandler.bind(this);
   }
+  /**
+   * Fires deleteContact action with its id as param
+   * @param {Event} e 
+   */
   deleteContactHandler(e) {
     deleteContact(e.target.id);
   }
@@ -40,3 +48,5 @@ export default class ContactsBox extends Component {
     );
   }
 }
+
+export default ContactsBox

@@ -2,18 +2,29 @@ import React, { Component } from "react";
 import SocketEmiter from "../../store/SocketEmiter";
 import { addNewContact } from "../../store/actions/contactsActions";
 
-export default class ContactsSearch extends Component {
+/**
+ * Small input in sidebar used to search for users. If input matches user new buttons are created for user user to click and create new contacts
+ * @constructor
+ */
+
+class ContactsSearch extends Component {
   constructor(props) {
     super(props);
 
     this.handleInput = this.handleInput.bind(this);
     this.contactAdd = this.contactAdd.bind(this);
   }
-
+  /**
+   * Fires searchContactsRequest action for every time input is changed
+   * @param {Event} e 
+   */
   handleInput(e) {
     SocketEmiter.searchContactsRequest(e.target.value);
   }
-
+ /**
+  * Tells server to add new contact with targets id as param
+  * @param {Event} e 
+  */
   contactAdd(e) {
     addNewContact(e.target.id);
   }
@@ -41,3 +52,5 @@ export default class ContactsSearch extends Component {
     );
   }
 }
+
+export default ContactsSearch

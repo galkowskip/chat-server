@@ -1,7 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const SignedInLinks = () => {
+/**
+ * Navbars links if user is not logged
+ */
+const SignedOutLinks = () => {
   return (
     <ul id="nav-mobile" className="">
       <li>
@@ -14,4 +17,4 @@ const SignedInLinks = () => {
   );
 };
 
-export default SignedInLinks;
+export default SignedOutLinks;

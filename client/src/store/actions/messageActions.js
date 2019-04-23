@@ -2,7 +2,10 @@ import {
     store
 } from "../..";
 import SocketEmiter from "../SocketEmiter";
-
+/**
+ * Sends message string
+ * @param {String} data 
+ */
 export function sendMessage(data) {
     SocketEmiter.sendMessage(data)
     store.dispatch({
@@ -10,7 +13,10 @@ export function sendMessage(data) {
         payload: data
     })
 }
-
+/**
+ * Gets an array of messages from server
+ * @param {*} data 
+ */
 export function getMessagesSuccess(data) {
     store.dispatch({
         type: "GET_ALL_MESSAGES",
@@ -18,6 +24,10 @@ export function getMessagesSuccess(data) {
     })
 }
 
+/**
+ * GEts one message from server
+ * @param {*} data 
+ */
 export function newMessageSuccess(data) {
     store.dispatch({
         type: "ADD_MESSAGE",

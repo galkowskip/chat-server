@@ -1,6 +1,10 @@
 import React, { Component } from "react";
 
-export default class InputBox extends Component {
+/**
+ * Used as input for user to type his message in
+ * @constructor
+ */
+class InputBox extends Component {
   constructor(props) {
     super(props);
 
@@ -11,7 +15,10 @@ export default class InputBox extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
-
+ /**
+  * Maps component state to inputs value
+  * @param {Event} e 
+  */
   handleChange(e) {
     this.setState({
       ...this.state,
@@ -19,8 +26,11 @@ export default class InputBox extends Component {
     });
   }
 
+  /**
+   * Sends message to server
+   * @param {Event} e 
+   */
   handleSubmit(e) {
-    //will dispatch action
     e.preventDefault();
     this.props.handleMessage(this.state.message);
     this.setState({ message: "" });
@@ -37,3 +47,5 @@ export default class InputBox extends Component {
     );
   }
 }
+
+export default InputBox

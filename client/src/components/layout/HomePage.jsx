@@ -1,6 +1,11 @@
 import React, { Component } from "react";
 
-export default class HomePage extends Component {
+/**
+ * Home page screen
+ * @constructor
+ */
+
+class HomePage extends Component {
   render() {
     return (
       <div className="container landing-page">
@@ -9,7 +14,7 @@ export default class HomePage extends Component {
             <div className="main-card-img" />
           </div>
           <div className="card">
-            <h3>Firebase powered web communicator project</h3>
+            <h3>Socket.io powered web communicator project</h3>
             <ul>
               <li>Fast</li>
               <li>Secure</li>
@@ -41,3 +46,5 @@ export default class HomePage extends Component {
     );
   }
 }
+
+export default  HomePage

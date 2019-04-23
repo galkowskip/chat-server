@@ -118,7 +118,7 @@ module.exports = class SocketObserver {
     })
   }
 
-  async observeAll() {
+  observeAll() {
     this.userSearch();
     this.checkUser();
     this.addNewContact();

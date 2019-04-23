@@ -8,6 +8,12 @@ const owner = (owner, user) => {
   }
 };
 
+/**
+ * Message in a box
+ * @constructor 
+ * @param {User._id} owner Owner of message
+ * @param {User._id} user Active user
+ */
 const MessageCard = props => {
   return (
     <div className={"card " + owner(props.message.owner, props.user)}>

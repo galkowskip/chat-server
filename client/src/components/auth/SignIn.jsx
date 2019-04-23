@@ -3,6 +3,10 @@ import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 import { signIn } from "../../store/actions/userActions";
 
+
+/**
+ * Register new user screen.
+ */
 class SignIn extends Component {
   constructor(props) {
     super(props);
@@ -19,13 +23,21 @@ class SignIn extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
-
+/**
+ * Sets state equal to inputs value
+ * @param {Event} e
+ */
   handleChange(e) {
     this.setState({
       ...this.state,
       [e.target.id]: e.target.value
     });
   }
+
+  /**
+   * Sends form to server
+   * @param {Event} e 
+   */
   handleSubmit(e) {
     //will dispatch action
     e.preventDefault();
