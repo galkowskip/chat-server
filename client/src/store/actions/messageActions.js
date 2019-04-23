@@ -15,7 +15,7 @@ export function sendMessage(data) {
 }
 /**
  * Gets an array of messages from server
- * @param {*} data 
+ * @param {Array<Object>} data 
  */
 export function getMessagesSuccess(data) {
     store.dispatch({
@@ -26,7 +26,7 @@ export function getMessagesSuccess(data) {
 
 /**
  * GEts one message from server
- * @param {*} data 
+ * @param {Object} data 
  */
 export function newMessageSuccess(data) {
     store.dispatch({

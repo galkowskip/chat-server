@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 /**
  * Navabar links if user is logged
- * @param {*} props 
+ * @param {Object} props 
  */
 const SignedInLinks = props => {
   return (

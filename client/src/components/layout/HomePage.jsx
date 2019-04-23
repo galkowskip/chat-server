@@ -36,8 +36,8 @@ class HomePage extends Component {
               <h3>React</h3>
             </div>
             <div className="card item">
-              <div className="firebase-img" />
-              <h3>Firebase</h3>
+              <div className="" />
+              <h3>Socket.io</h3>
             </div>
           </div>
         </main>

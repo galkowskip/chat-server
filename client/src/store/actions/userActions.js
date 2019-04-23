@@ -3,7 +3,7 @@ import {
 } from "../../index";
 /**
  * Request user data from server
- * @param {*} user 
+ * @param {Object} user 
  */
 export function login(user) {
     store.dispatch({
@@ -20,7 +20,7 @@ export function logout() {
     });
 }
 /**
- * @param {*} user 
+ * @param {Object} user 
  */
 export function signIn(user) {
     store.dispatch({
@@ -30,7 +30,7 @@ export function signIn(user) {
 }
 /**
  * Fired by listener watching userAuthorized event
- * @param {*} data 
+ * @param {Object} data 
  */
 export function watchUserAuthorizedDone(data) {
     store.dispatch({

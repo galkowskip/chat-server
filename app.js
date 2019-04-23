@@ -43,13 +43,7 @@ app.use(passport.session());
 
 //Routes
 app.use("/login", loginRouter);
-// app.get('*', (req, res) => {
-//   res.sendFile('/client/build/index.html')
-// })
 
-if (process.env.NODE_ENV === 'production') {
-  console.log('production')
-}
 io.use(
   passportSocketIo.authorize({
     cookieParser: cookieParser,
@@ -65,7 +59,6 @@ io.on("connection", socket => {
 
   socket
 });
-
 
 const port = process.env.PORT || 3001
 

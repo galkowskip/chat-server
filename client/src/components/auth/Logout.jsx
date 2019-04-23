@@ -3,7 +3,6 @@ import React from "react";
 /**
  * Creates a simple screen telling user he got logged out
  * @constructor
- * 
  */
  function Logout() {
   return (
@@ -12,4 +11,4 @@ import React from "react";
     </div>
   );
 }
- export default Logout()
+ export default Logout

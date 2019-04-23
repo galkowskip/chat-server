@@ -17,7 +17,7 @@ const RenderLinks = user => {
 /**
  * Navbar used in all main routes, has data of active user, depending on if user is logged he has access to different links and options
  * @constructor
- * @param {User} user 
+ * @param {Object} user 
  */
 class Navbar extends Component {
   handleClick() {

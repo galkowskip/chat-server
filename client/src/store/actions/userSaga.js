@@ -66,7 +66,7 @@ function* logoutUserSaga() {
 //SignIn Saga
 /**
  * Sends form with new user credentials for server to save in the database
- * @param {*} action  Action object containing payload with form
+ * @param {Object} action  Action object containing payload with form
  */
 function* signInRequest({payload}) {
   try {

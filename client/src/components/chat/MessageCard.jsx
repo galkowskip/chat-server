@@ -11,8 +11,7 @@ const owner = (owner, user) => {
 /**
  * Message in a box
  * @constructor 
- * @param {User._id} owner Owner of message
- * @param {User._id} user Active user
+ * @param {Object} props
  */
 const MessageCard = props => {
   return (

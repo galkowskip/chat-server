@@ -4,7 +4,7 @@ import MessageCard from "./MessageCard";
 
 /**
  * Box containing array of messages in active conversation, creating the list of messages. Returns null if arrray <= 0
- * @param {*} props 
+ * @param {Object} props 
  * @constructor
  */
 const MessageBox = props => {

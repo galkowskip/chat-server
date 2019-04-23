@@ -40,7 +40,7 @@ export function deleteContact(data) {
 }
 /**
  * Response to searched user, gets Users in an Array
- * @param {*} data 
+ * @param {Object} data 
  */
 export function userSearchDone(data) {
     store.dispatch({

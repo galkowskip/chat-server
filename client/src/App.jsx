@@ -27,7 +27,6 @@ import SocketEmiter from "./store/SocketEmiter";
 /**
  * Highest order app component. Serves as routes manager for whole app. Uses socket.io Observer class to listen for upcoming events. 
  * @constructor
- * 
  */
 class App extends Component {
   componentDidMount() {
