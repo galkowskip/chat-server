@@ -4,7 +4,7 @@ const { MessageController } = require("./controllers/message.controller");
 
 const MessageModel = require("./models/message.model");
 
-module.exports = class SocketObserver {
+class SocketObserver {
   constructor(socket, mongoStore, io) {
     this.socket = socket;
     this.mongoStore = mongoStore;
@@ -133,4 +133,6 @@ module.exports = class SocketObserver {
     this.watchGetAllMessages();
     this.watchDeleteContact();
   }
-};
+}
+
+module.exports = { SocketObserver };

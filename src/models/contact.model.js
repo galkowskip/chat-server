@@ -6,4 +6,4 @@ const ContactSchema = new mongoose.Schema({
 
 const ContactModel = mongoose.model("Contact", ContactSchema);
 
-module.exports = ContactModel;
+module.exports = { ContactModel };

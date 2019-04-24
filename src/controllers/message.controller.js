@@ -1,4 +1,4 @@
-const MessageModel = require("../models/message.model");
+const { MessageModel } = require("../models/message.model");
 
 class MessageController {
   async getAllMessages(roomId) {

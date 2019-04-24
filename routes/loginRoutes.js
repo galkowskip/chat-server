@@ -1,9 +1,10 @@
 const express = require("express");
-const passport = require("../src/passport");
-const router = express.Router();
 
-const UserModel = require("../src/models/user.model");
+const { passport } = require("../src/passport");
+const { UserModel } = require("../src/models/user.model");
 const { UserController } = require("../src/controllers/user.controller");
+
+const router = express.Router();
 
 router.get("/logout", (req, res) => {
   req.logOut();
@@ -37,4 +38,4 @@ router.post("/local/newUser", async (req, res) => {
   }
 });
 
-module.exports = router;
+module.exports = { loginRouter: router };

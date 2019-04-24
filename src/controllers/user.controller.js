@@ -1,5 +1,6 @@
 const bcrypt = require("bcrypt");
-const UserModel = require("../models/user.model");
+
+const { UserModel } = require("../models/user.model");
 
 class UserController {
   async passwordHash(user) {

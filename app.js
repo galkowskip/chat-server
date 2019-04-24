@@ -5,11 +5,11 @@ const passportSocketIo = require("passport.socketio");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const morgan = require("morgan");
-
 const bodyParser = require("body-parser");
-const passport = require("./src/passport");
-const SocketObserver = require("./src/socketIo");
-const loginRouter = require("./routes/loginRoutes");
+
+const { passport } = require("./src/passport");
+const { SocketObserver } = require("./src/socketIo");
+const { loginRouter } = require("./routes/loginRoutes");
 const { mongoStore } = require("./src/mongodb");
 
 const app = express();

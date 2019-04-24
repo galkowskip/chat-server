@@ -1,4 +1,4 @@
-const ContactModel = require("../models/contact.model");
+const { ContactModel } = require("../models/contact.model");
 const { UserController } = require("../controllers/user.controller");
 
 class ContactController {
