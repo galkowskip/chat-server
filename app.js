@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const express = require("express");
 const app = express();
 
@@ -8,25 +10,25 @@ const server = require("http").Server(app);
 const io = require("socket.io")(server);
 const morgan = require("morgan");
 
-const SocketObserver = require("./config/socketIo")
+const SocketObserver = require("./config/socketIo");
 
 const session = require("express-session");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 
-const db = require('./config/mongodb')
+const db = require("./config/mongodb");
 
-const mongoStore = require("./config/mongoStore")
+const mongoStore = require("./config/mongoStore");
 
 //Routes import
 const loginRouter = require("./routes/loginRoutes");
 
-app.use(express.static("client/build"))
+app.use(express.static("client/build"));
 
 app.use(
   session({
     key: "expres.sid",
-    secret: "secretKey",
+    secret: process.env.SESSION_SECRET,
     store: mongoStore,
     resave: false,
     saveUninitialized: false
@@ -48,22 +50,22 @@ io.use(
   passportSocketIo.authorize({
     cookieParser: cookieParser,
     key: "expres.sid",
-    secret: "secretKey",
-    store: mongoStore,
+    secret: process.env.SESSION_SECRET,
+    store: mongoStore
   })
 );
 
 io.on("connection", socket => {
-  socketObserver = new SocketObserver(socket, mongoStore, io)
-  socketObserver.observeAll()
+  socketObserver = new SocketObserver(socket, mongoStore, io);
+  socketObserver.observeAll();
 
-  socket
+  socket;
 });
 
-const port = process.env.PORT || 3001
+const port = process.env.PORT || 3001;
 
 server.listen(port, () => {
-  console.log(`Server listening on port ${port}`)
+  console.log(`Server listening on port ${port}`);
 });
 
 module.exports = app;
