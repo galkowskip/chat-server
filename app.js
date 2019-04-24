@@ -1,71 +1,66 @@
 require("dotenv").config();
 
 const express = require("express");
-const app = express();
-
-const passport = require("./config/passport");
 const passportSocketIo = require("passport.socketio");
-
-const server = require("http").Server(app);
-const io = require("socket.io")(server);
+const session = require("express-session");
+const cookieParser = require("cookie-parser");
 const morgan = require("morgan");
 
-const SocketObserver = require("./config/socketIo");
-
-const session = require("express-session");
 const bodyParser = require("body-parser");
-const cookieParser = require("cookie-parser");
-
-const db = require("./config/mongodb");
-
-const mongoStore = require("./config/mongoStore");
-
-//Routes import
+const passport = require("./src/passport");
+const SocketObserver = require("./src/socketIo");
 const loginRouter = require("./routes/loginRoutes");
+const { mongoStore } = require("./src/mongodb");
 
-app.use(express.static("client/build"));
+const app = express();
+const server = require("http").Server(app);
+const io = require("socket.io")(server);
 
-app.use(
-  session({
-    key: "expres.sid",
-    secret: process.env.SESSION_SECRET,
-    store: mongoStore,
-    resave: false,
-    saveUninitialized: false
-  })
-);
+const createServer = () => {
+  app.use(express.static("client/build"));
 
-app.use(cookieParser());
-app.use(bodyParser.json());
+  app.use(
+    session({
+      key: "expres.sid",
+      secret: process.env.SESSION_SECRET,
+      store: mongoStore,
+      resave: false,
+      saveUninitialized: false
+    })
+  );
 
-app.use(morgan("tiny"));
+  app.use(cookieParser());
+  app.use(bodyParser.json());
 
-app.use(passport.initialize());
-app.use(passport.session());
+  app.use(morgan("tiny"));
 
-//Routes
-app.use("/login", loginRouter);
+  app.use(passport.initialize());
+  app.use(passport.session());
 
-io.use(
-  passportSocketIo.authorize({
-    cookieParser: cookieParser,
-    key: "expres.sid",
-    secret: process.env.SESSION_SECRET,
-    store: mongoStore
-  })
-);
+  //Routes
+  app.use("/login", loginRouter);
 
-io.on("connection", socket => {
-  socketObserver = new SocketObserver(socket, mongoStore, io);
-  socketObserver.observeAll();
+  io.use(
+    passportSocketIo.authorize({
+      cookieParser: cookieParser,
+      key: "expres.sid",
+      secret: process.env.SESSION_SECRET,
+      store: mongoStore
+    })
+  );
 
-  socket;
-});
+  io.on("connection", socket => {
+    socketObserver = new SocketObserver(socket, mongoStore, io);
+    socketObserver.observeAll();
 
-const port = process.env.PORT || 3001;
+    socket;
+  });
 
-server.listen(port, () => {
-  console.log(`Server listening on port ${port}`);
-});
+  const port = process.env.PORT || 3001;
 
-module.exports = app;
+  server.listen(port, () => {
+    console.log(`Server listening on port ${port}`);
+  });
+};
+
+module.exports = createServer();

@@ -1,8 +1,9 @@
 const express = require("express");
-const passport = require("../config/passport");
+const passport = require("../src/passport");
 const router = express.Router();
 
-const UserModel = require("../model/UserModel");
+const UserModel = require("../src/models/user.model");
+const { UserController } = require("../src/controllers/user.controller");
 
 router.get("/logout", (req, res) => {
   req.logOut();
@@ -23,8 +24,7 @@ router.post("/local/newUser", async (req, res) => {
       if (checkUser) {
         throw new Error("User already exists");
       } else {
-        //Save user
-        await newUser.passwordHash();
+        await UserController.passwordHash(newUser);
         await newUser.save();
         res.send("OK");
       }
@@ -32,8 +32,8 @@ router.post("/local/newUser", async (req, res) => {
       throw new Error("Passwords validation failed");
     }
   } catch (error) {
-    console.log(error);
-    res.status(401).send(error);
+    console.error(error.message);
+    res.status(401).json(error);
   }
 });
 

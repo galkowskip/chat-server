@@ -1,19 +1,21 @@
 const passport = require("passport"),
   LocalStrategy = require("passport-local").Strategy;
 
-const User = require("../../model/UserModel");
+const UserModel = require("../models/user.model");
+const { UserController } = require("../controllers/user.controller");
 
-const localStrategy = new LocalStrategy({
+const localStrategy = new LocalStrategy(
+  {
     usernameField: "email",
     passwordField: "password"
   },
-  async function (email, password, done) {
+  async function(email, password, done) {
     try {
-      const user = await User.findOne({
+      const user = await UserModel.findOne({
         email: email
       });
       if (user) {
-        if (await user.comparePasswords(password)) {
+        if (await UserController.comparePasswords(password, user)) {
           return done(null, user);
         } else {
           throw new Error("Wrong password");
@@ -23,7 +25,7 @@ const localStrategy = new LocalStrategy({
       }
     } catch (error) {
       return done(null, false, {
-        message: error
+        message: error.message
       });
     }
   }
