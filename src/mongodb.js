@@ -15,4 +15,5 @@ const createMongoConnection = () => {
     mongooseConnection: mongoose.connection
   }));
 };
+
 module.exports = { mongoStore: createMongoConnection() };

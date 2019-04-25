@@ -23,7 +23,6 @@ class ContactController {
         cid: contact.id,
         targets: results
       };
-
       return result;
     } catch (error) {
       console.error(error.message);
@@ -39,8 +38,7 @@ class ContactController {
       const newContact = new ContactModel({
         users: [id, thisUserId]
       });
-      const result = await newContact.save();
-      console.log(result);
+      await newContact.save();
     } catch (error) {
       console.error(error.message);
     }
@@ -49,9 +47,7 @@ class ContactController {
   async deleteContact(id) {
     try {
       const query = ContactModel.findByIdAndDelete(id);
-      const result = await query.exec();
-      console.log(result);
-      return result;
+      await query.exec();
     } catch (error) {
       console.error(error.message);
     }
