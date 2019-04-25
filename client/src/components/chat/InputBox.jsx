@@ -34,6 +34,7 @@ class InputBox extends Component {
   handleSubmit(e) {
     e.preventDefault();
     this.props.handleMessage(this.state.message);
+    e.target.value = "";
     this.setState({ message: "" });
   }
 

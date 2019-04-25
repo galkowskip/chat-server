@@ -1,9 +1,7 @@
 import React, { Component } from "react";
 
 import ContactsSearch from "./ContactsSearch";
-import {
-  deleteContact,
-} from "../../store/actions/contactsActions";
+import { deleteContact } from "../../store/actions/contactsActions";
 
 import ContactButton from "./ContactButton";
 
@@ -19,7 +17,7 @@ class ContactsBox extends Component {
   }
   /**
    * Fires deleteContact action with its id as param
-   * @param {Event} e 
+   * @param {Event} e
    */
   deleteContactHandler(e) {
     deleteContact(e.target.id);
@@ -28,7 +26,7 @@ class ContactsBox extends Component {
   render() {
     return (
       <div className="contacts-box">
-        <div className="">
+        <div>
           <h3>Contacts</h3>
           {this.props.contacts.map(contact => {
             return contact ? (
@@ -39,14 +37,15 @@ class ContactsBox extends Component {
               />
             ) : null;
           })}
-          <ContactsSearch
-            userId={this.props.userId}
-            items={this.props.searchItems}
-          />
         </div>
+
+        <ContactsSearch
+          userId={this.props.userId}
+          items={this.props.searchItems}
+        />
       </div>
     );
   }
 }
 
-export default ContactsBox
+export default ContactsBox;

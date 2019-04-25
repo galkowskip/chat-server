@@ -15,7 +15,7 @@ body {
   display: grid;
   height: 100vh;
   grid-template-columns: repeat(12, 1fr);
-  grid-template-rows: 80px calc(100% - 180px) 100px !important;
+  grid-template-rows: 80px calc(100% - 120px) !important;
   grid-gap: 25px;
 }
 

@@ -16,26 +16,27 @@ class ContactsSearch extends Component {
   }
   /**
    * Fires searchContactsRequest action for every time input is changed
-   * @param {Event} e 
+   * @param {Event} e
    */
   handleInput(e) {
     SocketEmiter.searchContactsRequest(e.target.value);
   }
- /**
-  * Tells server to add new contact with targets id as param
-  * @param {Event} e 
-  */
+  /**
+   * Tells server to add new contact with targets id as param
+   * @param {Event} e
+   */
   contactAdd(e) {
     addNewContact(e.target.id);
   }
   render() {
     return (
       <div className="contacts-search">
+        <hr />
         {this.props.items &&
           this.props.items.map(item => {
             return (
               <button
-                className=""
+                className="button searched"
                 onClick={this.contactAdd}
                 id={item.id}
                 key={item.id}
@@ -46,11 +47,16 @@ class ContactsSearch extends Component {
           })}
         <div className="input-field">
           <label htmlFor="searchBox">Search for contacts</label>
-          <input id="searchBox" type="text" onInput={this.handleInput} />
+          <input
+            autoComplete="off"
+            id="searchBox"
+            type="text"
+            onInput={this.handleInput}
+          />
         </div>
       </div>
     );
   }
 }
 
-export default ContactsSearch
+export default ContactsSearch;
