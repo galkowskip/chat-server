@@ -1,8 +1,13 @@
 @import "./variables.scss";
 
+form {
+  display: flex;
+  flex-direction: column;
+}
 .input-field {
-  display: block;
+  display: flex;
   justify-content: center;
+  flex-direction: column;
   margin: 20px 0 20px 0;
 
   label {
@@ -13,7 +18,7 @@
   input {
     display: block;
     font-size: 120%;
-    width: 80%;
+    width: 100%;
   }
 }
 

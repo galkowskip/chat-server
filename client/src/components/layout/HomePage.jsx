@@ -8,43 +8,49 @@ import React, { Component } from "react";
 class HomePage extends Component {
   render() {
     return (
-      <div className="container landing-page">
+      <main className="container landing-page">
         <div className="card main-card">
-          <div className="card">
-            <div className="main-card-img" />
+          <div>
+            <h5>
+              Simple chat powered by Node.js backend and communicating with
+              client through socket.io.
+            </h5>
           </div>
-          <div className="card">
-            <h3>Socket.io powered web communicator project</h3>
-            <ul>
-              <li>Fast</li>
-              <li>Secure</li>
-              <li>Reliable and Simple</li>
-            </ul>
-          </div>
-        </div>
-
-        <main className="">
-          <hr />
-          <h1 className="text-white">This app is powered by: </h1>
+          <h4>This app is powered by: </h4>
           <div className="items-storage">
             <div className="card item">
-              <div className="redux-img" />
-              <h3>Redux & Redux Saga</h3>
+              <h3>Front:</h3>
+              <ul>
+                <li>
+                  <h4>Redux & Redux Saga</h4>
+                </li>
+                <li>
+                  <h4>Socket.io</h4>
+                </li>
+                <li>
+                  <h4>React</h4>
+                </li>
+              </ul>
             </div>
             <div className="card item">
-              <div className="react-img" />
-              <h3>React</h3>
-            </div>
-            <div className="card item">
-              <div className="" />
-              <h3>Socket.io</h3>
+              <h3>Back:</h3>
+              <ul>
+                <li>
+                  <h4>Redux & Redux Saga</h4>
+                </li>
+                <li>
+                  <h4>Socket.io</h4>
+                </li>
+                <li>
+                  <h4>React</h4>
+                </li>
+              </ul>
             </div>
           </div>
-        </main>
-        <footer />
-      </div>
+        </div>
+      </main>
     );
   }
 }
 
-export default  HomePage
+export default HomePage;

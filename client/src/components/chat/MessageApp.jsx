@@ -6,6 +6,8 @@ import ContactsBox from "./ContactsBox";
 import { connect } from "react-redux";
 import { sendMessage } from "../../store/actions/messageActions";
 
+import "../../style/main.css";
+
 /**
  * Highest order chat app, maps store state to its state and passes it to children props
  * @constructor
@@ -18,7 +20,7 @@ class MessageApp extends Component {
   }
   /**
    * Send message function passed down to InputBox to get its state before sending it to server. Adds contact id for server to add message to right contact
-   * @param {String} message 
+   * @param {String} message
    */
   handleMessage(message) {
     sendMessage({

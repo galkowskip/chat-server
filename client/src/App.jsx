@@ -21,11 +21,12 @@ import SocketObserver from "./store/SocketObserver";
 
 //Style
 import "./style/main.css";
+
 import { store } from "./index";
 import SocketEmiter from "./store/SocketEmiter";
 
 /**
- * Highest order app component. Serves as routes manager for whole app. Uses socket.io Observer class to listen for upcoming events. 
+ * Highest order app component. Serves as routes manager for whole app. Uses socket.io Observer class to listen for upcoming events.
  * @constructor
  */
 class App extends Component {
@@ -33,7 +34,7 @@ class App extends Component {
     const Observer = new SocketObserver(socket, store);
     Observer.watchAll();
 
-    SocketEmiter.checkUser()
+    SocketEmiter.checkUser();
   }
   render() {
     return (
