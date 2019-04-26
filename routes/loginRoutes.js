@@ -12,7 +12,8 @@ router.get("/logout", (req, res) => {
 });
 
 router.post("/local/auth", passport.authenticate("local"), (req, res) => {
-  res.send(req.session.passport);
+  const user = UserController.sanitizeUser(req.session.passport.user);
+  res.send(user);
 });
 
 router.post("/local/newUser", async (req, res) => {

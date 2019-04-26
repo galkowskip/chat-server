@@ -1,12 +1,9 @@
-const { ContactModel } = require("../models/contact.model");
 const { UserController } = require("../controllers/user.controller");
+const { ContactProvider } = require("../providers/contact.provider");
 
 class ContactController {
   async findContactsByUser(activeUserId) {
-    let contactListQuery = ContactModel.find({
-      users: activeUserId
-    });
-    return await contactListQuery.exec();
+    return await ContactProvider.getContactByUserId(activeUserId);
   }
 
   async getContactData(contact, user) {
@@ -30,15 +27,17 @@ class ContactController {
   }
 
   subscribeToContact(contact, socket) {
-    socket.join(contact.id);
+    try {
+      socket.join(contact.id);
+    } catch (error) {
+      console.error(error.message);
+    }
   }
 
   async addNewContact(id, thisUserId) {
     try {
-      const newContact = new ContactModel({
-        users: [id, thisUserId]
-      });
-      await newContact.save();
+      const users = [id, thisUserId];
+      return await ContactProvider.addNewContact(users);
     } catch (error) {
       console.error(error.message);
     }
@@ -46,8 +45,7 @@ class ContactController {
 
   async deleteContact(id) {
     try {
-      const query = ContactModel.findByIdAndDelete(id);
-      await query.exec();
+      ContactProvider.deleteContactById(id);
     } catch (error) {
       console.error(error.message);
     }

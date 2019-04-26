@@ -1,16 +1,16 @@
-const { MessageModel } = require("../models/message.model");
+const { MessageProvider } = require("../providers/message.provider");
 
 class MessageController {
   async getAllMessages(roomId) {
     try {
-      const query = MessageModel.find({
-        contactID: roomId
-      });
-      const messages = await query.exec();
+      const messages = await MessageProvider.getMessages(roomId);
       return messages;
     } catch (error) {
       console.error(error.message);
     }
+  }
+  async deleteContactsMessages(contactId) {
+    await MessageProvider.deleteContactsMessages(contactId);
   }
 }
 

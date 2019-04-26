@@ -2,7 +2,7 @@ const { UserController } = require("./controllers/user.controller");
 const { ContactController } = require("./controllers/contact.controller");
 const { MessageController } = require("./controllers/message.controller");
 
-const { MessageModel } = require("./models/message.model");
+const { MessageProvider } = require("./providers/message.provider");
 
 class SocketObserver {
   constructor(socket, mongoStore, io) {
@@ -40,7 +40,6 @@ class SocketObserver {
   addNewContact() {
     this.socket.on("AddNewContactRequest", async id => {
       try {
-        console.log(id + " / " + this.socket.request.user.id);
         if (id !== this.socket.request.user.id) {
           const result = await ContactController.addNewContact(
             id,
@@ -98,13 +97,13 @@ class SocketObserver {
         if (!data.contact || !data.messages) {
           this.socket.emit("NewMessageError", "Missing data");
         } else {
-          const message = new MessageModel({
+          const message = {
             owner: this.socket.request.user.id,
             contactID: data.contact,
             message: data.messages,
             time: Date.now()
-          });
-          await message.save();
+          };
+          await MessageProvider.addNewMessage(message);
           this.io.to(data.contact).emit("NewMessage", message);
         }
       } catch (error) {

@@ -1,7 +1,7 @@
 const passport = require("passport"),
   LocalStrategy = require("passport-local").Strategy;
 
-const { UserModel } = require("../models/user.model");
+const { UserProvider } = require("../providers/user.provider");
 const { UserController } = require("../controllers/user.controller");
 
 const localStrategy = new LocalStrategy(
@@ -11,9 +11,7 @@ const localStrategy = new LocalStrategy(
   },
   async function(email, password, done) {
     try {
-      const user = await UserModel.findOne({
-        email: email
-      });
+      const user = await UserProvider.getByEmail(email);
       if (user) {
         if (await UserController.comparePasswords(password, user)) {
           return done(null, user);

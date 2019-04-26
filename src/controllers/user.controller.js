@@ -1,8 +1,14 @@
 const bcrypt = require("bcrypt");
 
-const { UserModel } = require("../models/user.model");
+const { UserProvider } = require("../providers/user.provider");
 
 class UserController {
+  sanitizeUser(user) {
+    console.log(user);
+    delete user.password;
+    console.log(user);
+    return user;
+  }
   async passwordHash(user) {
     try {
       const salt = await bcrypt.genSalt(10);
@@ -23,8 +29,7 @@ class UserController {
 
   async getTargetedUser(userId) {
     try {
-      let user = UserModel.findById(userId);
-      user = await user.exec();
+      const user = await UserProvider.getById(userId);
       const result = {
         id: user.id,
         username: user.username
@@ -37,8 +42,7 @@ class UserController {
 
   async checkUser(user) {
     try {
-      const query = UserModel.findById(user);
-      const result = await query.exec();
+      const result = await UserProvider.getById(user);
       if (result) {
         return true, null;
       } else {
@@ -55,10 +59,7 @@ class UserController {
       if (data === "") {
         return null;
       }
-      const query = UserModel.find({
-        username: new RegExp(`${data}`)
-      });
-      const result = await query.exec();
+      const result = await UserProvider.getByUsername(new RegExp(`${data}`));
       const response = result.map(item => {
         return {
           username: item.username,

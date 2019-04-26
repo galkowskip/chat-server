@@ -1,6 +1,6 @@
 const passport = require("passport");
 
-const { UserModel } = require("./models/user.model");
+const { UserProvider } = require("./providers/user.provider");
 const { localStrategy } = require("./strategies/local");
 
 passport.use(localStrategy);
@@ -11,7 +11,7 @@ passport.serializeUser(function(user, done) {
 
 passport.deserializeUser(async function(id, done) {
   try {
-    const user = await UserModel.findById(id);
+    const user = await UserProvider.getById(id);
     done(null, user);
   } catch (error) {
     done(error, null);
