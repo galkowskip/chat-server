@@ -4,13 +4,18 @@ const { MessageController } = require("./controllers/message.controller");
 
 const { MessageProvider } = require("./providers/message.provider");
 
+/**
+ *  This class has all functions responsible for observing events sent by clients with socket.io
+ */
 class SocketObserver {
   constructor(socket, mongoStore, io) {
     this.socket = socket;
     this.mongoStore = mongoStore;
     this.io = io;
   }
-
+  /**
+   *  Checks if user who sent request is logged and authorized. CheckUser -> UserAuthorized
+   */
   checkUser() {
     this.socket.on("CheckUser", async () => {
       try {
@@ -25,7 +30,9 @@ class SocketObserver {
       }
     });
   }
-
+  /**
+   * Observes if client sent UserSearchRequest. UserSearchRequest -> UserSearchDone
+   */
   userSearch() {
     this.socket.on("UserSearchRequest", async data => {
       try {
@@ -36,7 +43,9 @@ class SocketObserver {
       }
     });
   }
-
+  /**
+   * Observes if client sent AddNewContactRequest. AddNewContactRequest -> AddNewContactDone
+   */
   addNewContact() {
     this.socket.on("AddNewContactRequest", async id => {
       try {
@@ -55,7 +64,9 @@ class SocketObserver {
       }
     });
   }
-
+  /**
+   * Watches and sends back full contact list of the user who sent request. GetContactRequest -> GetContactListDone
+   */
   watchGetContactList() {
     this.socket.on("GetContactListRequest", async () => {
       try {
@@ -79,7 +90,9 @@ class SocketObserver {
       }
     });
   }
-
+  /**
+   * GetAllMessagesRequest -> GetAllMessagesDone
+   */
   watchGetAllMessages() {
     this.socket.on("GetAllMessagesRequest", async roomId => {
       try {
@@ -90,7 +103,9 @@ class SocketObserver {
       }
     });
   }
-
+  /**
+   * SendMessage -> NewMessage
+   */
   watchSendMessage() {
     this.socket.on("SendMessage", async data => {
       try {
@@ -111,7 +126,9 @@ class SocketObserver {
       }
     });
   }
-
+  /**
+   * DeleteContact -> ContactDeleted
+   */
   watchDeleteContact() {
     this.socket.on("DeleteContact", async data => {
       try {
@@ -123,7 +140,9 @@ class SocketObserver {
       }
     });
   }
-
+  /**
+   * Starts all watch functions
+   */
   observeAll() {
     this.userSearch();
     this.checkUser();

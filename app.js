@@ -9,9 +9,16 @@ const bodyParser = require("body-parser");
 
 const { passport } = require("./src/passport");
 const { SocketObserver } = require("./src/socketIo");
-const { loginRouter } = require("./routes/loginRoutes");
+const { loginRouter } = require("./src/routes/loginRoutes");
 const { mongoStore } = require("./src/mongodb");
 
+/**
+ * Use this class to start server
+ * @class
+ * @param {Express} app main express app, used by http.server to start app
+ * @param {*} server http.server
+ * @param {socketIO.server} io socket.io websocket manager
+ */
 class Server {
   constructor(app, server, io) {
     this.app = app;
@@ -22,6 +29,9 @@ class Server {
 
     this.setUpServer();
   }
+  /**
+   *  app setup and config
+   */
   setUpServer() {
     this.app.use(express.static("client/build"));
 
@@ -57,7 +67,9 @@ class Server {
       this.socketObserver.observeAll();
     });
   }
-
+  /**
+   * server start listening
+   */
   startServer() {
     this.server.listen(this.port, () => {
       console.log(`Server listening on port ${this.port}`);

@@ -1,14 +1,22 @@
 const bcrypt = require("bcrypt");
 
 const { UserProvider } = require("../providers/user.provider");
-
+/**
+ *Controls flow of user data
+ */
 class UserController {
+  /**
+   * deletes data unnecessary for client form UserModel like passwords
+   * @param {UserModel} user
+   */
   sanitizeUser(user) {
-    console.log(user);
     delete user.password;
-    console.log(user);
     return user;
   }
+  /**
+   * Replaces UserModel password with a hash
+   * @param {UserModel} user
+   */
   async passwordHash(user) {
     try {
       const salt = await bcrypt.genSalt(10);
@@ -18,15 +26,23 @@ class UserController {
       throw new Error(error);
     }
   }
-
+  /**
+   * Uses bcrypt to compare password given by client and password in UserModel
+   * @param {String} password
+   * @param {UserModel} user
+   */
   async comparePasswords(password, user) {
     try {
-      return await bcrypt.compare(password, user.password);
+      const isComparable = await bcrypt.compare(password, user.password);
+      return isComparable;
     } catch (error) {
-      throw new Error(error);
+      console.error(error);
     }
   }
-
+  /**
+   * Gets User data to display as contact
+   * @param {String} userId
+   */
   async getTargetedUser(userId) {
     try {
       const user = await UserProvider.getById(userId);
@@ -39,7 +55,10 @@ class UserController {
       console.error(error);
     }
   }
-
+  /**
+   * Checks if user data given by client matches one in db
+   * @param {UserModel} user
+   */
   async checkUser(user) {
     try {
       const result = await UserProvider.getById(user);
@@ -53,7 +72,10 @@ class UserController {
       return null, error;
     }
   }
-
+  /**
+   * Uses RegExp with string given by client in contact search input to find Users similar to clients input
+   * @param {String} data
+   */
   async userSimilarSearch(data) {
     try {
       if (data === "") {

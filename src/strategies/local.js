@@ -13,7 +13,7 @@ const localStrategy = new LocalStrategy(
     try {
       const user = await UserProvider.getByEmail(email);
       if (user) {
-        if (await UserController.comparePasswords(password, user)) {
+        if (await UserController.comparePasswords(password, user[0])) {
           return done(null, user);
         } else {
           throw new Error("Wrong password");
